@@ -1,5 +1,12 @@
 import React from "react";
-import { Checkbox, Modal, Button, Input, Message } from "semantic-ui-react";
+import {
+  Checkbox,
+  Modal,
+  Button,
+  Input,
+  Message,
+  Icon,
+} from "semantic-ui-react";
 
 export const Tasks = ({
   currentList,
@@ -24,67 +31,62 @@ export const Tasks = ({
           </Message>
         </div>
       )}
-      {currentList.name !== "" && (
+      {currentList.name && (
         <div>
-          <h2> Task Under {currentList.name} </h2>
+          <h2>
+            Tasks Under&nbsp;
+            <span style={{ fontSize: "32px", fontWeight: 700 }}>
+              {currentList.name}
+            </span>
+          </h2>
           <br />
-
-          {tasks.map((task) => {
-            return (
-              <div key={task.id}>
-                <Checkbox
-                  label={task.text}
-                  checked={task.Completed}
-                  onClick={() => updateTaskStatus(task.id)}
-                />
-                &emsp;&emsp;&emsp;&emsp;
-                <Button
-                  onClick={() => deleteTask(task.id)}
-                  size="mini"
-                  negative
-                >
-                  Delete
-                </Button>
-                <br />
-                <br />
+          {tasks.map((task) => (
+            <div key={task.id} style={{ display: "flex", margin: "1.5rem 0" }}>
+              <div
+                onClick={() => deleteTask(task.id)}
+                style={{ marginRight: "1rem" }}
+              >
+                <Icon name="trash" color="red" link />
               </div>
-            );
-          })}
-
-          <br />
+              <Checkbox
+                label={task.text}
+                checked={task.Completed}
+                onClick={() => updateTaskStatus(task.id)}
+              />
+            </div>
+          ))}
           <Modal
             basic
-            size={"small"}
-            trigger={<Button positive>Add Task</Button>}
-            header="Add a Task"
+            size="small"
+            trigger={<Button color="green">Add Task</Button>}
           >
             <Modal.Content>
               <Modal.Description>
-                <h4>Task to be created under {currentList.name}</h4>
+                <p style={{ fontSize: "20px" }}>
+                  Add Task under&nbsp;
+                  <span style={{ fontWeight: 600, fontSize: "24px" }}>
+                    {currentList.name}
+                  </span>
+                </p>
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
               <Input
                 name="newTaskName"
                 fluid
-                placeholder="EX. Need to buy groceries ..."
+                placeholder="Eg. Need to buy groceries ..."
                 onChange={updateText}
               />
               <br />
               <Button
-                positive
-                onClick={() => {
-                  createNewEntity("tasks");
-                }}
+                color="green"
+                onClick={() => createNewEntity("tasks")}
                 inverted
               >
                 Add Task
               </Button>
             </Modal.Actions>
           </Modal>
-          <br />
-          <br />
-          <br />
         </div>
       )}
     </div>

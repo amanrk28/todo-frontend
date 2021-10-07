@@ -79,34 +79,30 @@ class App extends Component {
 
   updateTaskStatus = (id) => {
     const putTaskUrl = `${tasksApi}/${id}`;
-    const taskURL = `${tasksApi}?task_list=${this.state.currentList.id}`;
     axios
       .put(putTaskUrl)
       .then((res) => {
-        axios
-          .get(taskURL)
-          .then((res) => {
-            this.setState({ tasks: res.data.task });
-          })
-          .catch((err) => console.log(err));
+        let arr = this.state.tasks;
+        const idx = arr.findIndex((x) => x.id === res.data.task_id);
+        if (idx > -1) {
+          arr[idx] = { ...arr[idx], Completed: res.data.task_Completed };
+        }
+        this.setState({ tasks: [...arr] });
       })
       .catch((err) => console.log(err));
   };
 
-  deleleTask = (id) => {
-    alert("Do You really want to delete the task?");
+  deleteTask = (id) => {
+    // eslint-disable-next-line no-restricted-globals
+    const shouldDelete = confirm("Do You really want to delete the task?");
     const deleteTaskUrl = `${tasksApi}/${id}`;
-    const taskURL = `${tasksApi}?task_list=${this.state.currentList.id}`;
+    if (!shouldDelete) return;
     axios
       .delete(deleteTaskUrl)
       .then((res) => {
-        alert("task has been deleted sucessfully");
-        axios
-          .get(taskURL)
-          .then((res) => {
-            this.setState({ tasks: res.data.task });
-          })
-          .catch((err) => alert(err));
+        const arr = this.state.tasks.filter((x) => x.id !== id);
+        this.setState({ tasks: [...arr] });
+        alert("Task deleted Successfully!");
       })
       .catch((err) => alert(err));
   };
@@ -127,7 +123,7 @@ class App extends Component {
           updateText={this.updateText}
           createNewEntity={this.createNewEntity}
           updateTaskStatus={this.updateTaskStatus}
-          deleleTask={this.deleleTask}
+          deleteTask={this.deleteTask}
         />
       </div>
     );
