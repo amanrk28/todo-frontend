@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Menu, Sidebar, Modal, Button, Input } from "semantic-ui-react";
 
 export const Tasklist = ({
@@ -8,6 +8,7 @@ export const Tasklist = ({
   updateText,
   createNewEntity,
 }) => {
+  const [open, setOpen] = useState(false);
   return (
     <Sidebar as={Menu} visible vertical inverted>
       <Menu.Item>
@@ -27,6 +28,9 @@ export const Tasklist = ({
       <Modal
         size="small"
         basic
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
         trigger={
           <div style={{ margin: "1rem" }}>
             <Button.Group fluid widths="1">
@@ -37,7 +41,7 @@ export const Tasklist = ({
           </div>
         }
       >
-        <Modal.Header>Add TaskList </Modal.Header>
+        <Modal.Header>Add TaskList</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <p>Type the name of the Task list you want to create</p>
@@ -50,7 +54,7 @@ export const Tasklist = ({
             <br />
             <Button
               positive
-              onClick={() => createNewEntity("list")}
+              onClick={() => createNewEntity("list", () => setOpen(false))}
               fluid
               inverted
             >

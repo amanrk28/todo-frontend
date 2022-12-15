@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Checkbox,
   Modal,
@@ -16,6 +16,7 @@ export const Tasks = ({
   updateText,
   createNewEntity,
 }) => {
+  const [open, setOpen] = useState(false);
   return (
     <div style={{ marginLeft: "300px" }}>
       <br />
@@ -58,6 +59,9 @@ export const Tasks = ({
           <Modal
             basic
             size="small"
+            open={open}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
             trigger={<Button color="green">Add Task</Button>}
           >
             <Modal.Content>
@@ -80,7 +84,7 @@ export const Tasks = ({
               <br />
               <Button
                 color="green"
-                onClick={() => createNewEntity("tasks")}
+                onClick={() => createNewEntity("tasks", () => setOpen(false))}
                 inverted
               >
                 Add Task

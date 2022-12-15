@@ -42,7 +42,7 @@ class App extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createNewEntity = (type) => {
+  createNewEntity = (type, cb) => {
     const {
       currentList: { id },
     } = this.state;
@@ -55,6 +55,7 @@ class App extends Component {
             .get(taskListApi)
             .then((getRes) => {
               this.setState({ lists: getRes.data.tasklist });
+              cb();
             })
             .catch((err) => alert(err));
         })
@@ -70,6 +71,7 @@ class App extends Component {
             .get(taskURL)
             .then((res) => {
               this.setState({ tasks: res.data.task });
+              cb();
             })
             .catch((err) => console.log(err));
         })
